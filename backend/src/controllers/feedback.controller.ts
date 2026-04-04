@@ -25,26 +25,36 @@ export const submitFeedback = async (req: Request, res: Response) => {
       }
     }
 
-    // ✅ Save feedback first
-    const feedback = await Feedback.create(req.body);
-
-    // ✅ Call Gemini AI (safe)
+    // ✅ Call Gemini AI first to get category
+    let aiResult = null;
     try {
-      const aiResult = await analyzeFeedback(title, description);
-
-      if (aiResult) {
-        feedback.ai_category = aiResult.category;
-        feedback.ai_sentiment = aiResult.sentiment;
-        feedback.ai_priority = aiResult.priority_score;
-        feedback.ai_summary = aiResult.summary;
-        feedback.ai_tags = aiResult.tags;
-        feedback.ai_processed = true;
-
-        await feedback.save();
-      }
+      aiResult = await analyzeFeedback(title, description);
     } catch (aiError) {
       console.log("AI Processing Failed:", aiError);
-      // ❗ Do NOT break app if AI fails
+      // Continue with default category if AI fails
+    }
+
+    // ✅ Prepare feedback data with category
+    const feedbackData = {
+      title,
+      description,
+      submitterEmail: submitterEmail || undefined,
+      category: aiResult?.category || "Other",
+    };
+
+    // ✅ Save feedback with category
+    const feedback = await Feedback.create(feedbackData);
+
+    // ✅ Update with AI details if available
+    if (aiResult) {
+      feedback.ai_category = aiResult.category;
+      feedback.ai_sentiment = aiResult.sentiment;
+      feedback.ai_priority = aiResult.priority_score;
+      feedback.ai_summary = aiResult.summary;
+      feedback.ai_tags = aiResult.tags;
+      feedback.ai_processed = true;
+
+      await feedback.save();
     }
 
     // ✅ Response

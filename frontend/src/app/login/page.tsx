@@ -56,6 +56,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="login-input"
+              suppressHydrationWarning
             />
           </div>
 
@@ -68,6 +69,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="login-input password-input"
+                suppressHydrationWarning
               />
               <button
                 type="button"

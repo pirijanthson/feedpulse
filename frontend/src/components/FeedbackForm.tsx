@@ -52,6 +52,7 @@ export default function FeedbackForm() {
             value={form.submitterName}
             onChange={(e) => setForm({ ...form, submitterName: e.target.value })}
             className="feedback-input"
+            suppressHydrationWarning
             required
           />
 
@@ -61,6 +62,7 @@ export default function FeedbackForm() {
             value={form.submitterEmail}
             onChange={(e) => setForm({ ...form, submitterEmail: e.target.value })}
             className="feedback-input"
+            suppressHydrationWarning
             required
           />
 
@@ -70,6 +72,7 @@ export default function FeedbackForm() {
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
             className="feedback-input"
+            suppressHydrationWarning
             required
           />
 
@@ -82,6 +85,7 @@ export default function FeedbackForm() {
               }
             }}
             className="feedback-textarea"
+            suppressHydrationWarning
             rows={4}
             required
           />
@@ -90,6 +94,7 @@ export default function FeedbackForm() {
             value={form.category}
             onChange={(e) => setForm({ ...form, category: e.target.value })}
             className="feedback-select"
+            suppressHydrationWarning
           >
             <option>Bug</option>
             <option>Feature Request</option>
@@ -97,7 +102,7 @@ export default function FeedbackForm() {
             <option>Other</option>
           </select>
 
-          <button className="feedback-submit-btn">
+          <button className="feedback-submit-btn" suppressHydrationWarning>
             Submit Feedback
           </button>
         </form>

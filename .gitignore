@@ -118,3 +118,4 @@ data/
 .env.prod
 .env.staging
 .env.local.backup
+backend\node_modules
